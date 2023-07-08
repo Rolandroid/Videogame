@@ -1,4 +1,4 @@
-// obten el contexto de renredizado 2D del lienzo
+// Obtén el contexto de renderizado 2D del lienzo
 const canvas = document.getElementById("gameCanvas");
 const context = canvas.getContext("2d");
 
@@ -8,82 +8,76 @@ let playerY = 350;
 let playerSpeedX = 0;
 let playerSpeedY = 0;
 const gravity = 0.5;
-const jumForce = -10;
+const jumpForce = -10;
 let isJumping = false;
 let bullets = [];
 
-// Funcion de actualisación del juego
-function updateGame(){
+// Función de actualización del juego
+function updateGame() {
     // Borra el lienzo
-    context.clearRect(0, 0, canvas.clientWidth, canvas.height);
+    context.clearRect(0, 0, canvas.width, canvas.height);
 
-    // Dibujar al jugador
+    // Dibuja al jugador
     context.fillRect(playerX, playerY, 50, 50);
 
-    // Dibujar las balas
-    bullets.forEach(bullet=>{
+    // Dibuja las balas
+    bullets.forEach(bullet => {
         bullet.x += bullet.speedX;
-        context.fillReact(bullet.x, bullet.y, 10, 5);
+        context.fillRect(bullet.x, bullet.y, 10, 5);
     });
 
     // Actualiza la posición del jugador
     playerX += playerSpeedX;
     playerY += playerSpeedY;
 
-    // Aplicar la gravedadd al jugador
-    playerSpeedY+= gravity;
+    // Aplica la gravedad al jugador
+    playerSpeedY += gravity;
 
     // Control del salto
-    if(isJumping && playerY >= canvas.height - 50){
-        playerSpeedY = JumpForce
-        isJumping = false
+    if (isJumping && playerY >= canvas.height - 50) {
+        playerSpeedY = jumpForce;
+        isJumping = false;
     }
 
-    // Limitar al jugador dentro del lienzo
-
-    if(playerY >= canvas.height - 50) {
+    // Limita al jugador dentro del lienzo
+    if (playerY >= canvas.height - 50) {
         playerY = canvas.height - 50;
         playerSpeedY = 0;
     }
-    // Solicita la proxima animacion
-    requestAnimationFrame(updateGame)
+
+    // Solicita la próxima animación
+    requestAnimationFrame(updateGame);
 }
 
-
-//control de entrada del teclado
-document.addEventListener("keydown", function(event){
-    if(event.key === "ArrowRight"){
+// Control de entrada del teclado
+document.addEventListener("keydown", function(event) {
+    if (event.key === "ArrowRight") {
         playerSpeedX = 5;
-    }
-    else if(event.key === "ArrowLeft"){
+    } else if (event.key === "ArrowLeft") {
         playerSpeedX = -5;
-    }
-    else if (event.key === "arrowUp" && !isJumping) {
-        playerSpeedY = JumpForce;
+    } else if (event.key === "ArrowUp" && !isJumping) {
+        playerSpeedY = jumpForce;
         isJumping = true;
-    }
-    else if (event.key === "f") {
-        fireBullet()
+    } else if (event.key === "f") {
+        fireBullet();
     }
 });
 
-document.addEventListener("keyup",function(event){
-    if("ArrowRight" || event.key === "ArrowLeft"){
-        playerSpeed = 0
+document.addEventListener("keyup", function(event) {
+    if (event.key === "ArrowRight" || event.key === "ArrowLeft") {
+        playerSpeedX = 0;
     }
 });
 
 // Función para disparar una bala
-
-function fireBullet(){
+function fireBullet() {
     const bullet = {
         x: playerX + 50,
         y: playerY + 25,
         speedX: 8
-    }
-    bullet.push(bullets);
-};
+    };
+    bullets.push(bullet);
+}
 
 // Inicia el juego
-
 updateGame();
